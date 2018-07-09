@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 PROJECT=$1
 DRAKE_REPOSITORY=${2:-infinit}
 
@@ -20,4 +22,4 @@ git add *
 git commit -s -m "Initialize project."
 
 # Create a virtualenv and install drake dependencies.
-cd _build/linux64 && virtualenv -p python3 .venv && . .venv/bin/activate && pip install -r ../../drake/requirements.txt
+cd _build/linux64 && python3 -mvirtualenv -p python3 .venv && . .venv/bin/activate && pip install -r ../../drake/requirements.txt
