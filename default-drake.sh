@@ -12,14 +12,11 @@ cd $PROJECT
 # Remove unwanted files.
 rm -rf .git README.md default-drake.sh
 
-# Initialize the git repository and add drake.
+# Intialize the project.
 git init
-git submodule add https://github.com/$DRAKE_REPOSITORY/drake
-
-# Intialize the project itself.
 echo '# $PROJECT' > README.md
 git add *
 git commit -s -m "Initialize project."
 
 # Create a virtualenv and install drake dependencies.
-cd _build/linux64 && python3 -mvirtualenv -p python3 .venv && . .venv/bin/activate && pip install -r ../../drake/requirements.txt
+cd _build/linux64 && python3 -mvirtualenv -p python3 .venv && . .venv/bin/activate && pip install git+https://github.com/Dimrok/drake
