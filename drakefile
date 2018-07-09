@@ -8,6 +8,7 @@ def configure(cxx_config = drake.cxx.Config(),
   # Config.
   #
   cxx_config.flag('-std=c++14')
+  cxx_config.add_local_include_path('src')
 
   #
   # Rules.
