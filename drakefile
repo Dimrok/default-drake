@@ -53,7 +53,7 @@ def configure(cxx_config = drake.cxx.Config(),
       drake.nodes('tests/' + name + '.cc',) + [lib],
       cxx_toolkit,
       cxx_config_test)
-    rule_test << test
+    rule_tests << test
     runner = drake.Runner(exe = test)
     runner.reporting = drake.Runner.Reporting.on_failure
     rule_check << runner.status
