@@ -1,5 +1,7 @@
 TEST_FOLDER := $(shell mktemp -d)
 
+.ONESHELL:
+
 test:
 	./default-drake.sh $(TEST_FOLDER)
 	cd $(TEST_FOLDER)
