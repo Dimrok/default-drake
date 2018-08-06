@@ -1,0 +1,10 @@
+language: python
+python:
+  - "3.6"
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install -y python3-pip python3-virtualenv git
+
+script:
+  - make test
