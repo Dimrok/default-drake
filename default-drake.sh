@@ -8,7 +8,7 @@ git clone https://github.com/Dimrok/default-drake $PROJECT
 cd $PROJECT
 
 # Remove unwanted files.
-rm -rf .git README.md
+rm -rf .git README.md .travis.yml default-drake.sh Makefile
 
 # Initialize the git repository and add drake.
 git init
