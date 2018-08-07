@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# Drake.
+git+git://github.com/Dimrok/drake.git
