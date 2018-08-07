@@ -1,10 +1,9 @@
-language: python
-python:
-  - "3.6"
+language: cpp
 
-install:
-  - sudo apt-get update
-  - sudo apt-get install -y python3-pip python3-virtualenv git
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python3-pip python3-virtualenv git clang-5
+  - CC=clang-5.0 && CXX=clang++-5.0
 
 script:
   - make test
