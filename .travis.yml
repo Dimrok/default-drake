@@ -1,8 +1,11 @@
+dist: trusty
 language: cpp
 
 before_install:
+  - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+  - sudo apt-add-repository "deb https://apt.llvm.org/trusty llvm-toolchain-trusty-5.0 main"
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python3-pip python3-virtualenv git clang-5
+  - sudo apt-get install -qq python3-pip python-virtualenv git clang-5.0
   - CC=clang-5.0 && CXX=clang++-5.0
 
 script:
