@@ -8,5 +8,8 @@ before_install:
   - sudo apt-get install -qq python3-pip python-virtualenv git clang-5.0
   - CC=clang-5.0 && CXX=clang++-5.0
 
+before_script:
+  - make --version
+
 script:
   - make test
