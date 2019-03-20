@@ -1,60 +1,81 @@
 import drake
 import drake.cxx
+import os
 
-def configure(cxx_config = drake.cxx.Config(),
-              cxx_toolkit = drake.cxx.Toolkit()):
 
-  #
-  # Config.
-  #
-  cxx_config.flag('-std=c++17')
-  cxx_config.add_local_include_path('src')
+def configure(cxx_config=drake.cxx.Config(),
+              cxx_toolkit=drake.cxx.Toolkit()):
 
-  #
-  # Rules.
-  #
-  rule_lib = drake.Rule('lib')
-  rule_bin = drake.Rule('bin')
-  rule_tests = drake.Rule('tests')
-  rule_check = drake.Rule('check')
+    #
+    # Config.
+    #
+    cxx_config.flag('-std=c++17')
+    cxx_config.add_local_include_path('src')
 
-  #
-  # Sources.
-  #
-  sources = drake.nodes()
+    #
+    # Rules.
+    #
+    rule_lib = drake.Rule('lib')
+    rule_bin = drake.Rule('bin')
+    rule_tests = drake.Rule('tests')
+    rule_check = drake.Rule('check')
 
-  #
-  # Libraries.
-  #
-  lib = drake.cxx.DynLib(
-    'lib/lib',
-    sources,
-    cxx_toolkit,
-    cxx_config)
-  rule_lib << lib
+    #
+    # Sources.
+    #
+    sources = drake.nodes(
+    )
 
-  #
-  # Binaries.
-  #
-  bin = drake.cxx.Executable(
-    'bin/bin',
-    drake.nodes('src/main.cc',) + [lib],
-    cxx_toolkit,
-    cxx_config)
-  rule_bin << bin
+    #
+    # Libraries.
+    #
+    lib = drake.cxx.DynLib(
+        'lib/lib',
+        sources,
+        cxx_toolkit,
+        cxx_config)
+    rule_lib << lib
 
-  #
-  # Tests.
-  #
-  cxx_config_test = drake.cxx.Config(cxx_config)
-  for name in [
-  ]:
-    test = drake.cxx.Executable(
-      'tests/' + name,
-      drake.nodes('tests/' + name + '.cc',) + [lib],
-      cxx_toolkit,
-      cxx_config_test)
-    rule_tests << test
-    runner = drake.Runner(exe = test)
-    runner.reporting = drake.Runner.Reporting.on_failure
-    rule_check << runner.status
+    #
+    # Binaries.
+    #
+    bin = drake.cxx.Executable(
+        'bin/bin',
+        drake.nodes('src/main.cc',) + [lib],
+        cxx_toolkit,
+        cxx_config)
+    rule_bin << bin
+
+    #
+    # Tests.
+    #
+    cxx_config_test = drake.cxx.Config(cxx_config)
+
+    for name in [
+    ]:
+        test = drake.cxx.Executable(
+            'tests/' + name,
+            drake.nodes('tests/' + name + '.cc',) + [lib],
+            cxx_toolkit,
+            cxx_config_test)
+        rule_tests << test
+        runner = drake.Runner(exe=test)
+        runner.reporting = drake.Runner.Reporting.on_failure
+        rule_check << runner.status
+
+    class CodeCov(drake.Builder):
+        def __init__(self):
+            self.out = drake.VirtualNode('codecov')
+            super().__init__(srcs=sources,
+                             dsts=[self.out])
+
+        def execute(self):
+            return self.cmd(' '.join(self.command_line),
+                            self.command_line)
+
+        @property
+        def command_line(self):
+            return ['gcov', '-a', '-b', '-c', '-j'] + list(map(str, sources))
+
+        def hash(self):
+            return self.command_line

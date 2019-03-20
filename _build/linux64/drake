@@ -8,6 +8,6 @@ cfg.enable_debug_symbols()
 cfg.enable_optimization()
 
 with drake.Drake('../..') as d:
-  d.run(
-    cxx_config = cfg,
-  )
+    d.run(
+        cxx_config=cfg,
+    )
