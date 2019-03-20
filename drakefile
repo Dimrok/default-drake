@@ -49,7 +49,10 @@ def configure(cxx_config=drake.cxx.Config(),
     #
     # Tests.
     #
+    codecov = os.environ.get('CODECOV')
     cxx_config_test = drake.cxx.Config(cxx_config)
+    if codecov:
+        cxx_config_test.flag('-coverage')
 
     for name in [
     ]:
@@ -79,3 +82,6 @@ def configure(cxx_config=drake.cxx.Config(),
 
         def hash(self):
             return self.command_line
+
+    if codecov:
+        rule_check << CodeCov().out
